@@ -14,6 +14,10 @@ SPOTIPY_CLIENT_SECRET = '8333de6242494266b8d8f32c08c5cadd'
 sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID,
                                                            client_secret=SPOTIPY_CLIENT_SECRET))
 
+auth_manager = SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET)
+token = auth_manager.get_access_token()
+print(f"Access Token: {token}")
+
 # Streamlit app
 st.set_page_config(page_title="🎵 Spotify Playlist Generator", page_icon="🎧", layout="centered")
 
@@ -63,18 +67,23 @@ base_song = st.text_input("Or enter a base song (optional):")
 
 # Function to get audio features for a track
 def get_audio_features(track_id):
-    features = sp.audio_features(track_id)[0]
-    return [
-        features['danceability'],
-        features['energy'],
-        features['loudness'],
-        features['speechiness'],
-        features['acousticness'],
-        features['instrumentalness'],
-        features['liveness'],
-        features['valence'],
-        features['tempo']
-    ]
+    features = sp.audio_features([track_id])  # Ensure it's a list
+    if features and features[0]:  # Check if data exists
+        return [
+            features[0]['danceability'],
+            features[0]['energy'],
+            features[0]['loudness'],
+            features[0]['speechiness'],
+            features[0]['acousticness'],
+            features[0]['instrumentalness'],
+            features[0]['liveness'],
+            features[0]['valence'],
+            features[0]['tempo']
+        ]
+    else:
+        st.error(f"Could not retrieve audio features for track ID: {track_id}")
+        return None
+
 
 # Function to get recommendations using cosine similarity
 def get_recommendations(mood, genre, base_song=None):
@@ -94,6 +103,7 @@ def get_recommendations(mood, genre, base_song=None):
             track_features = []
             for track in tracks:
                 track_id = track['id']
+                print(f"Fetching audio features for track ID: {track_id}")
                 features = get_audio_features(track_id)
                 track_features.append(features)
 
@@ -109,16 +119,16 @@ def get_recommendations(mood, genre, base_song=None):
     else:
         # Use mood and genre to get recommendations
         target_energy = 0.5  # Default energy level
-        # if mood == "Happy":
-        #     target_energy = 0.8
-        # elif mood == "Sad":
-        #     target_energy = 0.3
-        # elif mood == "Energetic":
-        #     target_energy = 0.9
-        # elif mood == "Relaxed":
-        #     target_energy = 0.4
-        # elif mood == "Romantic":
-        #     target_energy = 0.6
+        if mood == "Happy":
+            target_energy = 0.8
+        elif mood == "Sad":
+            target_energy = 0.3
+        elif mood == "Energetic":
+            target_energy = 0.9
+        elif mood == "Relaxed":
+            target_energy = 0.4
+        elif mood == "Romantic":
+            target_energy = 0.6
 
         # Ensure genre is valid
         if genre not in valid_genres:
