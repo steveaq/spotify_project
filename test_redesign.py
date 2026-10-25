@@ -94,7 +94,7 @@ class InterfaceTests(unittest.TestCase):
         import streamlit as st
         st.cache_data.clear()
         st.cache_resource.clear()
-        secrets_patch = patch.object(st.secrets, "get", return_value="")
+        secrets_patch = patch("streamlit.secrets", {})
         env_patch = patch.dict(os.environ, {"SPOTIPY_CLIENT_ID": "", "SPOTIPY_CLIENT_SECRET": ""})
         secrets_patch.start()
         env_patch.start()

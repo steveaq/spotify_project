@@ -47,6 +47,7 @@ html{scroll-behavior:smooth;scroll-padding-top:24px}
 .stButton button,.stDownloadButton button{min-height:44px;border-radius:4px;border:1px solid #cfd3c5;box-shadow:none;transition:background .15s ease,border-color .15s ease}
 .stButton button p,.stDownloadButton button p{font-size:12px;font-weight:600}
 .stButton button[kind="primary"]{background:var(--green);color:white;border-color:var(--green);min-height:48px}
+.stButton button[kind="primary"] p{color:white}
 .stButton button[kind="primary"]:hover{background:#233f31;border-color:#233f31;color:white}
 .stButton button:hover,.stDownloadButton button:hover{background:#eef1e3;border-color:var(--green);color:var(--green)}
 .stButton button:focus-visible,.stDownloadButton button:focus-visible,a:focus-visible{outline:3px solid #567342;outline-offset:3px}
