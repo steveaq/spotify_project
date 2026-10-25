@@ -1,0 +1,8 @@
+.streamlit/secrets.toml
+.cache
+.cache-*
+test_script.py
+__pycache__/
+*.py[cod]
+.venv/
+.DS_Store

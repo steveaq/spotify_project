@@ -1,0 +1,17 @@
+# Optional always-on deployment. Creating this service incurs Render charges.
+# This file alone does not create or change any service.
+services:
+  - type: web
+    name: side-a-playlist-studio
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m streamlit run spotify_app.py --server.address 0.0.0.0 --server.port $PORT
+    healthCheckPath: /_stcore/health
+    envVars:
+      - key: SPOTIPY_CLIENT_ID
+        sync: false
+      - key: SPOTIPY_CLIENT_SECRET
+        sync: false
+      - key: SPOTIFY_MARKET
+        value: GB

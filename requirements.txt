@@ -1,5 +1,2 @@
-streamlit
-spotipy
-scikit-learn
-pandas
-numpy
+streamlit>=1.43,<2
+spotipy>=2.25,<3
